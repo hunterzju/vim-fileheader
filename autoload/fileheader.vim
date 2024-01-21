@@ -1,7 +1,7 @@
 " @Author: ahonn
 " @Date: 2018-10-03 23:38:15
 " @Last Modified by: ahonn
-" @Last Modified time: 2021-01-26 23:34:41
+" @Last Modified time: 2024-01-21 05:31:12
 
 let s:vim_style = { 'begin': '', 'char': '" ', 'end': '' }
 let s:c_style = { 'begin': '/*', 'char': ' * ', 'end': ' */' }
@@ -11,6 +11,7 @@ let s:haskell_style = { 'begin': '', 'char': '-- ', 'end': '' }
 let s:html_style = { 'begin': "<!--", 'char': ' ', 'end': '-->' }
 let s:erlang_style = { 'begin': '', 'char': '% ', 'end': '' }
 let s:lisp_style = { 'begin': '', 'char': ';; ', 'end': '' }
+let s:td_style = { 'begin': '//', 'char': '//','end': '//' }
 let s:delimiter_map = {
   \ 'vim': s:vim_style,
   \ 'c': s:c_style,
@@ -40,6 +41,7 @@ let s:delimiter_map = {
   \ 'erlang': s:erlang_style,
   \ 'clojure': s:lisp_style,
   \ 'scheme': s:lisp_style,
+  \ 'tablegen': s:td_style
   \ }
 
 if exists('g:fileheader_delimiter_map')
@@ -190,6 +192,14 @@ function! fileheader#get_templates()
     let templates = s:templates
   endif
   return templates
+endfunction
+
+" render function header with file name and type
+function! fileheader#render_header(delimiter)
+  let begin_line = a:delimiter['begin']
+  let chars = a:delimiter['char']
+  let begin_chars = split(begin_line, "\n")
+  let char = trim(chars)
 endfunction
 
 function! fileheader#get_header(delimiter)
