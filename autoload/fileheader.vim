@@ -1,7 +1,7 @@
 " @Author: ahonn
 " @Date: 2018-10-03 23:38:15
 " @Last Modified by: ahonn
-" @Last Modified time: 2024-01-21 05:31:12
+" @Last Modified time: 2024-01-21 12:36:26
 
 let s:vim_style = { 'begin': '', 'char': '" ', 'end': '' }
 let s:c_style = { 'begin': '/*', 'char': ' * ', 'end': ' */' }
@@ -136,9 +136,17 @@ endfunction
 function! fileheader#render_template(tpl, update)
   let tpl = a:tpl
   let date = strftime(g:fileheader_date_format)
+  let filename = fileheader#get_file_name()
+  let cur_filetype = &filetype
 
   " skip when update, just render at first time
   if !a:update
+    if match(tpl, '{{filename}}') != -1
+      let tpl = substitute(tpl, '{{filename}}', filename, 'g')
+    end
+    if match(tpl, '{{filetype}}') != -1
+      let tpl = substitute(tpl, '{{filetype}}', cur_filetype, 'g') 
+    end
     if match(tpl, '{{author}}') != -1
       let tpl = substitute(tpl, '{{author}}', g:fileheader_author, 'g')
     end
